@@ -55,16 +55,6 @@ def add_new_reservation(hotel_name , customer_name, Cust_number):
 	#else:
 	#	print "sorry no rooms avaliable"
 def list_hotels_in_city(city_name):
-	'''hotel_name = ""
-	total_room = 0
-	for e in hotel_list:
-		if e[2] == city_name:
-			hotel_name = e[1]
-			total_room = e[3]
-	if hotel_name == "" and total_room == 0:
-		print "There is no hotels in " + city_name
-	else:
-		print "In "+ city_name + " there is " + hotel_name  + " and it's have " + str(total_room) + " room"'''
 	hotels_list = []
 	for e in hotel_list:
 		if e[2] == city_name:
