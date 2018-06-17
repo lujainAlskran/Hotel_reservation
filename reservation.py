@@ -2,8 +2,8 @@ from twilio.rest import Client
 
 # Hotels info list [hotel number ,hotel name , city , total room , empty room]
 hotel_list = [[1,"hotel_A","jordan",50,25],
-			[2,"hotel_B","sauida arabia",100,75],
-			[3,"hotel_C","omman",150,100]]
+			[2,"hotel_B","sauida arabia",100,0],
+			[3,"hotel_C","jordan",150,100]]
 # Customers list
 cust_list = [["lujian", "+962797820291"], ["kareem", "+966583116531"],["kinan" , "+962795613725"]]
 # Reservation list [hotel number,customer number,reservation from date,reservation to date]
@@ -27,20 +27,22 @@ def add_customer(customer_name):
 def reserve_room(hotel_name,customer_name):
 	hotel_num = 0
 	for e in hotel_list:
-		if e[4] == 0:
-			return False
-		else:
-			for e in hotel_list:
-				if e[1] == hotel_name:
-					hotel_num = e[0]
-					e[4] -= 1
-			if hotel_num == 0:
-		 		print "There is no " + hotel_name
-		 	else:
-		 		return True
+		if e[1] == hotel_name:
+			if e[4] == 0:
+				print "Sorry, There is no rooms in " + hotel_name + " try another hotel"
+				return False
+			else:
+				hotel_num = e[0]
+				e[4] -= 1
+				return True
+		
+	print "There is no " + hotel_name	
+	return False	
+			
 		
 # add new reservation
 def add_new_reservation(hotel_name , customer_name, Cust_number):
+	hotel_num = 0
 	if reserve_room(hotel_name , customer_name):
 		for e in hotel_list:
 			if e[1] == hotel_name:
@@ -50,10 +52,10 @@ def add_new_reservation(hotel_name , customer_name, Cust_number):
 		reservation_list.append([hotel_num,cust_num])
 		send_text_message("Your reservation done , Thank you "+customer_name,Cust_number)
 		print "Done !"
-	else:
-		print "sorry no rooms avaliable"
+	#else:
+	#	print "sorry no rooms avaliable"
 def list_hotels_in_city(city_name):
-	hotel_name = ""
+	'''hotel_name = ""
 	total_room = 0
 	for e in hotel_list:
 		if e[2] == city_name:
@@ -62,7 +64,15 @@ def list_hotels_in_city(city_name):
 	if hotel_name == "" and total_room == 0:
 		print "There is no hotels in " + city_name
 	else:
-		print "In "+ city_name + " ther is " + hotel_name  + " and it have " + str(total_room) + " room"
+		print "In "+ city_name + " there is " + hotel_name  + " and it's have " + str(total_room) + " room"'''
+	hotels_list = []
+	for e in hotel_list:
+		if e[2] == city_name:
+			hotels_list.append([e[1],str(e[3])+" room"])
+	if hotels_list == []:
+		print "There is no hotels in " + city_name
+	else:
+		print "In "+ city_name + " there is " + str(hotels_list)
 def list_resevrations_for_hotel(hotel_name):
 	cl = []
 	for e in hotel_list:
@@ -86,5 +96,5 @@ def send_text_message(message, number):
     	from_="+19592084162",
     	body=message)
 
-add_new_reservation("hotel_C" , "abc" , "+962795613725") 
-list_resevrations_for_hotel("hotel_C")
+
+list_hotels_in_city("jordan")
